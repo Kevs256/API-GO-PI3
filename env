@@ -1,0 +1,5 @@
+IP_DB="127.0.1.1"
+PORT_DB="5432"
+USER_DB="postgres"
+PASS_DB="kevs"
+NAME_DB="api_go_auth"
