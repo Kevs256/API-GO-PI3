@@ -47,6 +47,21 @@ func GetRouteByIdBool(id uint) bool {
 	return true
 }
 
+// obtener el id del usuario por el id de la ruta
+func GetUserIdByRouteIdBool(id uint) (string, error) {
+	var route RouterSchema.Route
+	dbResult := db.DB.First(&route, id)
+	if dbResult.Error != nil {
+		// Ocurrió un error al obtener la ruta
+		return "null", dbResult.Error
+	}
+	fmt.Println(route.User_id)
+	if route.User_id == "" {
+		return "null", nil
+	}
+	return route.User_id, nil
+}
+
 //primero terminamos checkpoints para devolver los checkpoints
 
 //func GetParcialRouteById() ([]RouterSchema.Route, error) {
