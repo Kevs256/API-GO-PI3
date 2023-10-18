@@ -62,13 +62,32 @@ func GetUserIdByRouteIdBool(id uint) (string, error) {
 	return route.User_id, nil
 }
 
+func GetParcialRoutesByRouteId(id uint) (*RouterDTO.ResParcialRouteDTO, error) {
+	var route RouterSchema.Route
+	dbResult := db.DB.First(&route, id)
+	if dbResult.Error != nil {
+		// Ocurrió un error al obtener la ruta
+		return nil, dbResult.Error
+	}
+	// Lógica para obtener los checkpoints y formar ListCheckPoints
+	return &RouterDTO.ResParcialRouteDTO{
+		ID:            int(route.ID),
+		UserID:        route.User_id,
+		MainImage:     route.MainImage,
+		DurationRoute: route.DurationRoute,
+		DistanceRoute: route.DistanceRoute,
+		PriceRoute:    route.PriceRoute,
+		Likes:         route.Likes, // Función para obtener los checkpoints
+	}, nil
+}
+
 //primero terminamos checkpoints para devolver los checkpoints
 
-//func GetParcialRouteById() ([]RouterSchema.Route, error) {
+//func GetParcialRouteByIdUser() ([]RouterSchema.Route, error) {
 
 //}
 
-//func GetTotalRouteById() ([]RouterSchema.Route, error) {
+//func GetTotalRouteByIdRoute() ([]RouterSchema.Route, error) {
 
 //}
 

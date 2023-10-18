@@ -26,3 +26,8 @@ type ResUploadFileDTO struct {
 	StatusCode int    `json:"status_code"`
 	NameFile   string `json:"name_file"`
 }
+
+type ResParcialCheckPointDTO struct {
+	ID             uint   `json:"id"`
+	MultimediaPath string `json:"multimedia_path"`
+}

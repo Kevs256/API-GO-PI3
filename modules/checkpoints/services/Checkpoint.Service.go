@@ -138,3 +138,40 @@ func UpdateCheckPointMultimediaPath(checkpointID uint, multimediaPath string) er
 
 	return nil
 }
+
+//get all checkpoints by id route
+
+func GetAllParcialCheckpointsByRouteId(routeID uint) ([]CheckPointDTO.ResParcialCheckPointDTO, error) {
+	var checkpoints []CheckpoinSchema.CheckPoint
+	result := db.DB.Find(&checkpoints, "route_id = ?", routeID)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	var resParcialCheckpoints []CheckPointDTO.ResParcialCheckPointDTO
+	for _, checkpoint := range checkpoints {
+		resParcialCheckpoint := CheckPointDTO.ResParcialCheckPointDTO{
+			ID:             checkpoint.ID,
+			MultimediaPath: checkpoint.MultimediaPath,
+		}
+		resParcialCheckpoints = append(resParcialCheckpoints, resParcialCheckpoint)
+	}
+	return resParcialCheckpoints, nil
+}
+
+func GetParcialCheckPointByCheckPointId(checkpointID uint) (*CheckPointDTO.ResParcialCheckPointDTO, error) {
+	var checkpoint CheckpoinSchema.CheckPoint
+	result := db.DB.First(&checkpoint, checkpointID)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	parcialCheckpoint := &CheckPointDTO.ResParcialCheckPointDTO{
+		ID:             checkpoint.ID,
+		MultimediaPath: checkpoint.MultimediaPath,
+	}
+
+	return parcialCheckpoint, nil
+}
+
+//getImageBypath
