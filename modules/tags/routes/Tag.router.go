@@ -69,3 +69,25 @@ func GetAllTags(reponse http.ResponseWriter, request *http.Request) {
 	json.NewEncoder(reponse).Encode(&resTagDTO)
 	return
 }
+
+// aibamso acá
+// func GetTagByID(reponse http.ResponseWriter, request *http.Request) {
+// 	var resTagDTO TagDTO.ResTagGetByIdDTO
+// 	idTag := request.URL.Query().Get("id")
+// 	tag, error := TagServices.GetTagByID(idTag)
+// 	if error != nil {
+// 		reponse.WriteHeader(http.StatusBadRequest)
+// 		resTagDTO.StatusCode = int(http.StatusBadRequest)
+// 		resTagDTO.Message = "Ha ocurrido un error al crear el objeto" + error.Error()
+// 		json.NewEncoder(reponse).Encode(&resTagDTO)
+// 		return
+// 	}
+
+// 	reponse.WriteHeader(http.StatusOK)
+// 	resTagDTO.StatusCode = int(http.StatusOK)
+// 	resTagDTO.Message = "Tag obtenido con exito"
+// 	resTagDTO.Tag = tag
+// 	json.NewEncoder(reponse).Encode(&resTagDTO)
+// 	return
+
+// }

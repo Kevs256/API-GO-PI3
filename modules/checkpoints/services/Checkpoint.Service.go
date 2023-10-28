@@ -19,11 +19,10 @@ func Generate() (string, error) {
 
 func CreateCheckpoint(checkpoint CheckPointDTO.ReqCompleteCheckPointDTO) (*CheckpoinSchema.CheckPoint, error) {
 	result := &CheckpoinSchema.CheckPoint{
-		Name:           checkpoint.Name,
-		Description:    checkpoint.Description,
-		MultimediaPath: checkpoint.MultimediaPath,
-		Coordinates:    checkpoint.Coordinates,
-		RouteID:        checkpoint.RouteID,
+		Name:        checkpoint.Name,
+		Description: checkpoint.Description,
+		Coordinates: checkpoint.Coordinates,
+		RouteID:     checkpoint.RouteID,
 	}
 
 	dbResult := db.DB.Create(result)
@@ -174,4 +173,14 @@ func GetParcialCheckPointByCheckPointId(checkpointID uint) (*CheckPointDTO.ResPa
 	return parcialCheckpoint, nil
 }
 
-//getImageBypath
+//getImageByid Checkpoint
+
+func GetPathImageByCheckPoinId(checkpointID uint) (string, error) {
+	var checkpoint CheckpoinSchema.CheckPoint
+	result := db.DB.First(&checkpoint, checkpointID)
+	if result.Error != nil {
+		return "", result.Error
+	}
+
+	return checkpoint.MultimediaPath, nil
+}

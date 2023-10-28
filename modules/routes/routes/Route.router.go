@@ -117,13 +117,11 @@ func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 
 	parcialRouteDTO.ListCheckPoints = CheckPointsOfRoute
 	resRouteDTO.ResParcialRoute = parcialRouteDTO
-	response.WriteHeader(http.StatusBadRequest)
-	resRouteDTO.StatusCode = int(http.StatusBadRequest)
-	resRouteDTO.Message = "no se ecncontrarón checkpoints de la ruta"
+	response.WriteHeader(http.StatusOK)
+	resRouteDTO.StatusCode = int(http.StatusOK)
+	resRouteDTO.Message = "Ruta encontrada correctamente"
 	json.NewEncoder(response).Encode(&resRouteDTO)
 	return
 }
-
-//PROBAR
 
 //func RestorePassword() {}

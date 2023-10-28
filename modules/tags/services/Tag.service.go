@@ -45,3 +45,12 @@ func GetAllTags() ([]TagSchema.Tag, error) {
 	}
 	return tags, nil
 }
+
+func GetTagByID(tagID string) (TagSchema.Tag, error) {
+	var tag TagSchema.Tag
+	dbResult := db.DB.Where("id = ?", tagID).First(&tag)
+	if dbResult.Error != nil {
+		return tag, dbResult.Error
+	}
+	return tag, nil
+}

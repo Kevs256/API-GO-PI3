@@ -24,7 +24,6 @@ func CreateRoute(route RouterDTO.CompleteRouteDTO) (*RouterSchema.Route, error) 
 		DateRoute:        route.DateRoute,
 		LocationRoute:    route.LocationRoute,
 		PriceRoute:       route.PriceRoute,
-		MainImage:        route.MainImage,
 		TraceRoute:       route.TraceRoute}
 
 	dbResult := db.DB.Create(result)

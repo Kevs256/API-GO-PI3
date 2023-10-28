@@ -63,6 +63,7 @@ func main() {
 	router.HandleFunc("/checkpoint/", CheckpointRoutes.Test).Methods("GET")
 	router.HandleFunc("/checkpoint/createCheckpoint", CheckpointRoutes.CreateCheckpoint).Methods("POST")
 	router.HandleFunc("/checkpoint/uploadImageVideo", CheckpointRoutes.UploadFileCheckPoint).Methods("POST")
+	router.HandleFunc("/checkpoint/streamFile", CheckpointRoutes.StreamFileCheckpoint).Methods("GET")
 
 	//REPORTS
 	router.HandleFunc("/report/", ReportRoutes.Test).Methods("GET")
@@ -70,6 +71,7 @@ func main() {
 	//ROUTES
 	router.HandleFunc("/routes/", RoutesRoutes.Test).Methods("GET")
 	router.HandleFunc("/routes/createRoute", RoutesRoutes.CreateRoute).Methods("POST")
+	router.HandleFunc("/routes/findRoute/{route_id}", RoutesRoutes.GetRouteByRouteId).Methods("GET")
 
 	//TAGS
 	router.HandleFunc("/tag/", TagRoutes.Test).Methods("GET")
