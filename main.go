@@ -71,7 +71,7 @@ func main() {
 	//ROUTES
 	router.HandleFunc("/routes/", RoutesRoutes.Test).Methods("GET")
 	router.HandleFunc("/routes/createRoute", RoutesRoutes.CreateRoute).Methods("POST")
-	router.HandleFunc("/routes/findRoute/{route_id}", RoutesRoutes.GetRouteByRouteId).Methods("GET")
+	router.HandleFunc("/routes/findRoute/{ID}", RoutesRoutes.GetRouteByRouteId).Methods("GET")
 
 	//TAGS
 	router.HandleFunc("/tag/", TagRoutes.Test).Methods("GET")
