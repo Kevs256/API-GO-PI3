@@ -19,7 +19,6 @@ type CompleteRouteDTO struct {
 	DateRoute        time.Time      `json:"date_route"`
 	LocationRoute    string         `json:"location_route"`
 	PriceRoute       int            `json:"price_route"`
-	MainImage        string         `json:"main_image"`
 	TraceRoute       postgres.Jsonb `json:"trace_route"`
 }
 

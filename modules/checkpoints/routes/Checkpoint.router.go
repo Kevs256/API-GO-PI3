@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -171,4 +172,40 @@ func UploadFileCheckPoint(response http.ResponseWriter, request *http.Request) {
 	resUploadFileDTO.NameFile = handler.Filename
 	json.NewEncoder(response).Encode(&resUploadFileDTO)
 	return
+}
+
+//obtain file for id checkpoint probar
+
+func StreamFileCheckpoint(response http.ResponseWriter, request *http.Request) {
+	var pathFileCheckPointDTO CheckPointDTO.ReqStreamFileDTO
+	json.NewDecoder(request.Body).Decode(&pathFileCheckPointDTO)
+	var path, err = CheckPointServices.GetPathImageByCheckPoinId(pathFileCheckPointDTO.ID)
+	if err != nil {
+		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
+		resStreamFileDTO.StatusCode = http.StatusBadRequest
+		resStreamFileDTO.Message = "no se ha encontrado el path"
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(&resStreamFileDTO)
+		return
+	}
+
+	file, err := os.Open(path)
+	if err != nil {
+		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
+		resStreamFileDTO.StatusCode = http.StatusBadRequest
+		resStreamFileDTO.Message = "no se ha encontrado el archivo en al ruta"
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(&resStreamFileDTO)
+		return
+	}
+
+	defer file.Close()
+
+	fileInfo, err := file.Stat()
+	if err != nil {
+		http.Error(response, "File error", http.StatusInternalServerError)
+		return
+	}
+
+	http.ServeContent(response, request, file.Name(), fileInfo.ModTime(), file)
 }

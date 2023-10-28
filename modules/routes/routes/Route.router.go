@@ -124,6 +124,4 @@ func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 	return
 }
 
-//PROBAR
-
 //func RestorePassword() {}

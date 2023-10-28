@@ -4,11 +4,10 @@ import "github.com/jinzhu/gorm/dialects/postgres"
 
 //req dto create checkpoint
 type ReqCompleteCheckPointDTO struct {
-	Name           string         `json:"name"`
-	Description    string         `json:"description"`
-	MultimediaPath string         `json:"multimedia_path"`
-	Coordinates    postgres.Jsonb `json:"coordinates"`
-	RouteID        uint           `json:"route_id"`
+	Name        string         `json:"name"`
+	Description string         `json:"description"`
+	Coordinates postgres.Jsonb `json:"coordinates"`
+	RouteID     uint           `json:"route_id"`
 }
 
 //res dto create checkpoint
@@ -30,4 +29,15 @@ type ResUploadFileDTO struct {
 type ResParcialCheckPointDTO struct {
 	ID             uint   `json:"id"`
 	MultimediaPath string `json:"multimedia_path"`
+}
+
+//req streamFile by id
+type ReqStreamFileDTO struct {
+	ID uint `json:"id"`
+}
+
+//res streamFile by id
+type ResStreamFileDTO struct {
+	Message    string `json:"message"`
+	StatusCode int    `json:"status_code"`
 }
