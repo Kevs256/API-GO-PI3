@@ -56,7 +56,7 @@ func GetRoutesByUserId(response http.ResponseWriter, request *http.Request) {
 
 func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 	route_idJson := mux.Vars(request)
-	route_id := route_idJson["route_id"]
+	route_id := route_idJson["ID"]
 	fmt.Println(route_id)
 
 	var resRouteDTO RouteDTO.ResParcialRouteErrDTO
@@ -117,9 +117,9 @@ func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 
 	parcialRouteDTO.ListCheckPoints = CheckPointsOfRoute
 	resRouteDTO.ResParcialRoute = parcialRouteDTO
-	response.WriteHeader(http.StatusBadRequest)
-	resRouteDTO.StatusCode = int(http.StatusBadRequest)
-	resRouteDTO.Message = "no se ecncontrarón checkpoints de la ruta"
+	response.WriteHeader(http.StatusOK)
+	resRouteDTO.StatusCode = int(http.StatusOK)
+	resRouteDTO.Message = "Se encontró todo acerca d ela ruta"
 	json.NewEncoder(response).Encode(&resRouteDTO)
 	return
 }
