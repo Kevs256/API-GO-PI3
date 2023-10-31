@@ -58,7 +58,7 @@ func GetRoutesByUserId(response http.ResponseWriter, request *http.Request) {
 
 func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 	route_idJson := mux.Vars(request)
-	route_id := route_idJson["route_id"]
+	route_id := route_idJson["ID"]
 	fmt.Println(route_id)
 
 	var resRouteDTO RouteDTO.ResParcialRouteErrDTO
@@ -121,7 +121,7 @@ func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 	resRouteDTO.ResParcialRoute = parcialRouteDTO
 	response.WriteHeader(http.StatusOK)
 	resRouteDTO.StatusCode = int(http.StatusOK)
-	resRouteDTO.Message = "Ruta encontrada correctamente"
+	resRouteDTO.Message = "Se encontró todo acerca d ela ruta"
 	json.NewEncoder(response).Encode(&resRouteDTO)
 	return
 }
