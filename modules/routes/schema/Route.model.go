@@ -5,7 +5,6 @@ import (
 	ReportSchema "api/routes/modules/reports/schema"
 	"time"
 
-	"github.com/jinzhu/gorm/dialects/postgres"
 	"gorm.io/gorm"
 )
 
@@ -33,5 +32,5 @@ type Route struct {
 	CheckPoint []CheckpoinSchema.CheckPoint
 
 	//tipo de dato para almecenar diferentes puntos
-	TraceRoute postgres.Jsonb `gorm:"type:jsonb"`
+	TraceRoute string `gorm:"type:varchar"`
 }

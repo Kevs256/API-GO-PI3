@@ -2,6 +2,8 @@ package RouteServices
 
 import (
 	"api/routes/db"
+	CheckPointDTO "api/routes/modules/checkpoints/dtos"
+	CheckPointServices "api/routes/modules/checkpoints/services"
 	RouterDTO "api/routes/modules/routes/dtos"
 	RouterSchema "api/routes/modules/routes/schema"
 	"fmt"
@@ -78,6 +80,39 @@ func GetParcialRoutesByRouteId(id uint) (*RouterDTO.ResParcialRouteDTO, error) {
 		PriceRoute:    route.PriceRoute,
 		Likes:         route.Likes, // Función para obtener los checkpoints
 	}, nil
+}
+
+func GetTotalRoutes() (*[]RouterDTO.ResParcialRouteDTO, error) {
+	var routes []RouterSchema.Route
+	dbResults := db.DB.Find(&routes)
+	if dbResults.Error != nil {
+		// Ocurrió un error al obtener la ruta
+		return nil, dbResults.Error
+	}
+
+	var resRoutes []RouterDTO.ResParcialRouteDTO
+	for _, route := range routes {
+		resRoute := RouterDTO.ResParcialRouteDTO{
+			ID:            int(route.ID),
+			UserID:        route.User_id,
+			MainImage:     route.MainImage,
+			DurationRoute: route.DurationRoute,
+			DistanceRoute: route.DistanceRoute,
+			PriceRoute:    route.PriceRoute,
+			Likes:         route.Likes,
+			NameRoute:     route.NameRoute,
+			ListCheckPoints: func() []CheckPointDTO.ResParcialCheckPointDTO {
+				var checkPoints []CheckPointDTO.ResParcialCheckPointDTO
+				checkPoints, rr := CheckPointServices.GetAllParcialCheckpointsByRouteId(route.ID)
+				if rr != nil {
+					print("hubo un error en tomar los checkpoints")
+				}
+				return checkPoints
+			}(),
+		}
+		resRoutes = append(resRoutes, resRoute)
+	}
+	return &resRoutes, nil
 }
 
 //primero terminamos checkpoints para devolver los checkpoints

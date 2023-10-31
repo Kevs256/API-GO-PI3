@@ -158,6 +158,26 @@ func GetAllParcialCheckpointsByRouteId(routeID uint) ([]CheckPointDTO.ResParcial
 	return resParcialCheckpoints, nil
 }
 
+func GetAllTotalCheckpointsByRouteId(routeID uint) ([]CheckPointDTO.ReqCompleteCheckPointDTO, error) {
+	var checkpoints []CheckpoinSchema.CheckPoint
+	result := db.DB.Find(&checkpoints, "route_id = ?", routeID)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	var resCompleteCheckpoints []CheckPointDTO.ReqCompleteCheckPointDTO
+	for _, checkpoint := range checkpoints {
+		resCompleteCheckpoint := CheckPointDTO.ReqCompleteCheckPointDTO{
+			Name:        checkpoint.Name,
+			Description: checkpoint.Description,
+			Coordinates: checkpoint.Coordinates,
+			RouteID:     checkpoint.RouteID,
+		}
+		resCompleteCheckpoints = append(resCompleteCheckpoints, resCompleteCheckpoint)
+	}
+	return resCompleteCheckpoints, nil
+}
+
 func GetParcialCheckPointByCheckPointId(checkpointID uint) (*CheckPointDTO.ResParcialCheckPointDTO, error) {
 	var checkpoint CheckpoinSchema.CheckPoint
 	result := db.DB.First(&checkpoint, checkpointID)

@@ -3,23 +3,21 @@ package models
 import (
 	CheckPointDTO "api/routes/modules/checkpoints/dtos"
 	"time"
-
-	"github.com/jinzhu/gorm/dialects/postgres"
 )
 
 // dto de la ruta completa, req
 type CompleteRouteDTO struct {
-	UserID           string         `json:"user_id"`
-	TransportMethod  string         `json:"transport_method"`
-	TypeRoute        string         `json:"type_route"`
-	NameRoute        string         `json:"name_route"`
-	DescriptionRoute string         `json:"description_route"`
-	DurationRoute    int            `json:"duration_route"`
-	DistanceRoute    int            `json:"distance_route"`
-	DateRoute        time.Time      `json:"date_route"`
-	LocationRoute    string         `json:"location_route"`
-	PriceRoute       int            `json:"price_route"`
-	TraceRoute       postgres.Jsonb `json:"trace_route"`
+	UserID           string    `json:"user_id"`
+	TransportMethod  string    `json:"transport_method"`
+	TypeRoute        string    `json:"type_route"`
+	NameRoute        string    `json:"name_route"`
+	DescriptionRoute string    `json:"description_route"`
+	DurationRoute    int       `json:"duration_route"`
+	DistanceRoute    int       `json:"distance_route"`
+	DateRoute        time.Time `json:"date_route"`
+	LocationRoute    string    `json:"location_route"`
+	PriceRoute       int       `json:"price_route"`
+	TraceRoute       string    `json:"trace_route"`
 }
 
 // dto de la ruta respuesta
@@ -41,6 +39,7 @@ type ResParcialRouteDTO struct {
 	DistanceRoute   int                                     `json:"distance_route"`
 	PriceRoute      int                                     `json:"price_route"`
 	Likes           int                                     `json:"likes"`
+	NameRoute       string                                  `json:"name_route"`
 	ListCheckPoints []CheckPointDTO.ResParcialCheckPointDTO `json:"list_checkpoints"`
 }
 
@@ -50,4 +49,10 @@ type ResParcialRouteErrDTO struct {
 	StatusCode      int                 `json:"status_code"`
 	Message         string              `json:"message"`
 	ResParcialRoute *ResParcialRouteDTO `json:"res_parcial_route"`
+}
+
+type ResTotalRouteErrDTO struct {
+	StatusCode    int                   `json:"status_code"`
+	Message       string                `json:"message"`
+	ResTotalRoute *[]ResParcialRouteDTO `json:"res_parcial_route"`
 }

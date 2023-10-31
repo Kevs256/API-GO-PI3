@@ -22,7 +22,9 @@ func Test(reponse http.ResponseWriter, request *http.Request) {
 
 func CreateRoute(response http.ResponseWriter, request *http.Request) {
 	var createRouteDTO RouteDTO.CompleteRouteDTO
+	fmt.Println(request.Body)
 	json.NewDecoder(request.Body).Decode(&createRouteDTO)
+	fmt.Println(createRouteDTO)
 	var resRouteDTO RouteDTO.ResRouteCreateDTO
 
 	if createRouteDTO.UserID == "" {
@@ -120,6 +122,28 @@ func GetRouteByRouteId(response http.ResponseWriter, request *http.Request) {
 	response.WriteHeader(http.StatusOK)
 	resRouteDTO.StatusCode = int(http.StatusOK)
 	resRouteDTO.Message = "Ruta encontrada correctamente"
+	json.NewEncoder(response).Encode(&resRouteDTO)
+	return
+}
+
+func GetRoutes(response http.ResponseWriter, request *http.Request) {
+
+	var resRouteDTO RouteDTO.ResTotalRouteErrDTO
+
+	parcialRouteDTO, err := RouteServices.GetTotalRoutes()
+
+	if err != nil {
+		response.WriteHeader(http.StatusBadRequest)
+		resRouteDTO.StatusCode = int(http.StatusBadRequest)
+		resRouteDTO.Message = "la ruta no existe"
+		json.NewEncoder(response).Encode(&resRouteDTO)
+		return
+	}
+
+	resRouteDTO.ResTotalRoute = parcialRouteDTO
+	response.WriteHeader(http.StatusOK)
+	resRouteDTO.StatusCode = int(http.StatusOK)
+	resRouteDTO.Message = "Rutas encontradas correctamente"
 	json.NewEncoder(response).Encode(&resRouteDTO)
 	return
 }

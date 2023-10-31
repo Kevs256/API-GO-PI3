@@ -10,6 +10,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 // la funcion es como una funcion flecha y recibe 2 parametros
@@ -23,6 +25,7 @@ func Test(reponse http.ResponseWriter, request *http.Request) {
 func CreateCheckpoint(response http.ResponseWriter, request *http.Request) {
 	var createCheckPointDTO CheckPointDTO.ReqCompleteCheckPointDTO
 	json.NewDecoder(request.Body).Decode(&createCheckPointDTO)
+	fmt.Println(createCheckPointDTO)
 	var resCheckPointDTO CheckPointDTO.ResCompleteCheckPointDTO
 
 	var ExistRoute = RoutesServices.GetRouteByIdBool(createCheckPointDTO.RouteID)
@@ -165,8 +168,8 @@ func UploadFileCheckPoint(response http.ResponseWriter, request *http.Request) {
 	}
 
 	var resUploadFileDTO CheckPointDTO.ResUploadFileDTO
-	response.WriteHeader(http.StatusBadRequest)
-	resUploadFileDTO.StatusCode = int(http.StatusBadRequest)
+	response.WriteHeader(http.StatusOK)
+	resUploadFileDTO.StatusCode = int(http.StatusOK)
 	resUploadFileDTO.Message = "se ha subido el archivo correctamente y guardado el path"
 	resUploadFileDTO.Path = pathFinal
 	resUploadFileDTO.NameFile = handler.Filename
@@ -177,9 +180,23 @@ func UploadFileCheckPoint(response http.ResponseWriter, request *http.Request) {
 //obtain file for id checkpoint probar
 
 func StreamFileCheckpoint(response http.ResponseWriter, request *http.Request) {
-	var pathFileCheckPointDTO CheckPointDTO.ReqStreamFileDTO
-	json.NewDecoder(request.Body).Decode(&pathFileCheckPointDTO)
-	var path, err = CheckPointServices.GetPathImageByCheckPoinId(pathFileCheckPointDTO.ID)
+
+	checkpoint_idJson := mux.Vars(request)
+	checkpoint_id := checkpoint_idJson["checkpoint_id"]
+	fmt.Println(checkpoint_id)
+
+	checkpointIDUint, err2 := strconv.ParseUint(checkpoint_id, 10, 64)
+
+	if err2 != nil {
+		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
+		resStreamFileDTO.StatusCode = http.StatusBadRequest
+		resStreamFileDTO.Message = "no se ha encontrado el path"
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(&resStreamFileDTO)
+		return
+	}
+
+	var path, err = CheckPointServices.GetPathImageByCheckPoinId(uint(checkpointIDUint))
 	if err != nil {
 		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
 		resStreamFileDTO.StatusCode = http.StatusBadRequest
@@ -208,4 +225,40 @@ func StreamFileCheckpoint(response http.ResponseWriter, request *http.Request) {
 	}
 
 	http.ServeContent(response, request, file.Name(), fileInfo.ModTime(), file)
+}
+
+func GetCheckpointsByRouterId(response http.ResponseWriter, request *http.Request) {
+	checkpoint_idJson := mux.Vars(request)
+	checkpoint_id := checkpoint_idJson["checkpoint_id"]
+	fmt.Println(checkpoint_id)
+
+	checkpointIDUint, err2 := strconv.ParseUint(checkpoint_id, 10, 64)
+	if err2 != nil {
+		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
+		resStreamFileDTO.StatusCode = http.StatusBadRequest
+		resStreamFileDTO.Message = "no se ha encontrado el id"
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(&resStreamFileDTO)
+		return
+	}
+	var path, err = CheckPointServices.GetAllTotalCheckpointsByRouteId(uint(checkpointIDUint))
+
+	if len(path) == 0 {
+		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
+		resStreamFileDTO.StatusCode = http.StatusBadRequest
+		resStreamFileDTO.Message = "no se ha encontrado los checkpoint"
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(&resStreamFileDTO)
+		return
+	}
+
+	if err != nil {
+		var resStreamFileDTO CheckPointDTO.ResStreamFileDTO
+		resStreamFileDTO.StatusCode = http.StatusBadRequest
+		resStreamFileDTO.Message = "no se ha encontrado el id"
+		response.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(response).Encode(&resStreamFileDTO)
+		return
+	}
+
 }

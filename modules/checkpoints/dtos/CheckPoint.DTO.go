@@ -1,13 +1,11 @@
 package models
 
-import "github.com/jinzhu/gorm/dialects/postgres"
-
 //req dto create checkpoint
 type ReqCompleteCheckPointDTO struct {
-	Name        string         `json:"name"`
-	Description string         `json:"description"`
-	Coordinates postgres.Jsonb `json:"coordinates"`
-	RouteID     uint           `json:"route_id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Coordinates string `json:"coordinates"`
+	RouteID     uint   `json:"route_id"`
 }
 
 //res dto create checkpoint
